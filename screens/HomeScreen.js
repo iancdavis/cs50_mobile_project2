@@ -19,9 +19,9 @@ export default class HomeScreen extends React.Component {
       handleNameChange = name => {
         this.setState({name})
       }
-      handlePhoneChange = phone => {
+      /* handlePhoneChange = phone => {
         this.setState({phone})
-      }
+      } */
     
       handleSubmit = () => {
         alert('Submit in development')

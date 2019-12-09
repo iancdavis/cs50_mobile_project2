@@ -34,7 +34,7 @@ const AppContainer = createAppContainer(AppNavigator);
 export default class App extends React.Component {
 
   componentDidMount() {
-    fetchMovies()
+    fetchMovies("avengers")
   }
   render() {
     return <AppContainer />;
