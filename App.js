@@ -4,6 +4,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 
 import DetailsScreen from './screens/DetailsScreen.js';
 import HomeScreen from './screens/HomeScreen.js' 
+import { fetchMovies } from './api'
 
 const AppNavigator = createStackNavigator(
   {
@@ -31,6 +32,10 @@ const AppNavigator = createStackNavigator(
 const AppContainer = createAppContainer(AppNavigator);
 
 export default class App extends React.Component {
+
+  componentDidMount() {
+    fetchMovies()
+  }
   render() {
     return <AppContainer />;
   }
