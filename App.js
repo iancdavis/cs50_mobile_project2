@@ -4,7 +4,6 @@ import { createStackNavigator } from 'react-navigation-stack';
 
 import DetailsScreen from './screens/DetailsScreen.js';
 import HomeScreen from './screens/HomeScreen.js' 
-import { fetchMovies } from './api'
 
 const AppNavigator = createStackNavigator(
   {

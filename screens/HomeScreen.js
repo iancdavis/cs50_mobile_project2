@@ -6,15 +6,6 @@ import { fetchMovies } from '../api'
 import ScrollViewSearchResults from '../ScrollViewSearchResults';
 //import { FlatList } from 'react-native-gesture-handler';
 
-function Item({ title }) {
-    return (
-      <View style={styles.item}>
-        <Text style={styles.title}>{title}</Text>
-      </View>
-    );
-  }
-
-
 export default class HomeScreen extends React.Component {
     static navigationOptions = {
         title: 'Home',
@@ -55,12 +46,6 @@ export default class HomeScreen extends React.Component {
             />
             <Button title="Submit" onPress={this.handleSubmit}/>
             <Button title="Testing" onPress={this.handleTesting}/>
-            <ScrollView>
-              <Text>{this.state.name}</Text>
-              {this.state.results[0] != undefined && (
-              <Text>{this.state.results[0].Title} {this.state.results[0].Year}</Text>
-              )}
-            </ScrollView>
             <ScrollView>
             {this.state.results[0] != undefined && (
                 this.state.results.map((value, index) => {
