@@ -1,6 +1,19 @@
 import React from 'react'
-import { StyleSheet, Text, View, TextInput, Button, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, TextInput, Button, ScrollView, FlatList } from 'react-native'
 import Constants from 'expo-constants'
+
+import { fetchMovies } from '../api'
+import ScrollViewSearchResults from '../ScrollViewSearchResults';
+//import { FlatList } from 'react-native-gesture-handler';
+
+function Item({ title }) {
+    return (
+      <View style={styles.item}>
+        <Text style={styles.title}>{title}</Text>
+      </View>
+    );
+  }
+
 
 export default class HomeScreen extends React.Component {
     static navigationOptions = {
@@ -13,40 +26,49 @@ export default class HomeScreen extends React.Component {
     
       state = {
         name: '',
-        phone: '',
+        results: [],
       }
     
       handleNameChange = name => {
         this.setState({name})
+        //this.setState({results: fetchMovies(name)})
       }
-      /* handlePhoneChange = phone => {
-        this.setState({phone})
-      } */
     
-      handleSubmit = () => {
-        alert('Submit in development')
+      handleSubmit = async () => {
+        const searchResults = await fetchMovies(this.state.name)
+        this.setState({results: searchResults})
+      }
+
+      //REMOVE
+      handleTesting = () => {
+          console.log("BEGIN STATE.RESULTS\n\n")
+          console.log(this.state.results)
       }
       render() {
         return (
           <View style={styles.container}>
-            <Text>Open up App.js to start working on your app! Test</Text>
             <TextInput
             style={styles.input}
             value={this.state.name}
             onChangeText={this.handleNameChange}
             placeholder="Name"
             />
-            <TextInput
-            keyboardType="numeric"
-            style={styles.input}
-            value={this.state.phone}
-            onChangeText={this.handlePhoneChange}
-            placeholder="Phone"
-            />
             <Button title="Submit" onPress={this.handleSubmit}/>
+            <Button title="Testing" onPress={this.handleTesting}/>
             <ScrollView>
-              <Text>{this.state.name} : {this.state.phone}</Text>
+              <Text>{this.state.name}</Text>
+              {this.state.results[0] != undefined && (
+              <Text>{this.state.results[0].Title} {this.state.results[0].Year}</Text>
+              )}
             </ScrollView>
+            <ScrollView>
+            {this.state.results[0] != undefined && (
+                this.state.results.map((value, index) => {
+                    return <Text key={index}>{value.Title}</Text>
+                })
+              )}
+            </ScrollView>
+            
             <Button
               title="Go to Details Screen"
               onPress={() => this.props.navigation.navigate('Details', {
@@ -74,5 +96,14 @@ export default class HomeScreen extends React.Component {
         paddingHorizontal: 10,
         paddingVertical: 5,
         borderRadius: 3,
-      }
+      },
+      item: {
+        backgroundColor: '#f9c2ff',
+        padding: 20,
+        marginVertical: 8,
+        marginHorizontal: 16,
+      },
+      title: {
+        fontSize: 32,
+      },
     });

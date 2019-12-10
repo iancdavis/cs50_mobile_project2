@@ -17,7 +17,7 @@ const AppNavigator = createStackNavigator(
     defaultNavigationOptions: {
       headerTintColor: '#fff',
       headerStyle: {
-        backgroundColor: 'green',
+        backgroundColor: 'blue',
         
       },
       headerTitleStyle: {
@@ -33,9 +33,6 @@ const AppContainer = createAppContainer(AppNavigator);
 
 export default class App extends React.Component {
 
-  componentDidMount() {
-    fetchMovies("avengers")
-  }
   render() {
     return <AppContainer />;
   }
