@@ -1,9 +1,10 @@
 import React from 'react'
-import { StyleSheet, Text, View, TextInput, Button, ScrollView, FlatList } from 'react-native'
+import { StyleSheet, Text, View, TextInput, Button, ScrollView, FlatList, TouchableOpacity } from 'react-native'
 import Constants from 'expo-constants'
 
 import { fetchMovies } from '../api'
 import ScrollViewSearchResults from '../ScrollViewSearchResults';
+import { Row } from '../Row'
 //import { FlatList } from 'react-native-gesture-handler';
 
 export default class HomeScreen extends React.Component {
@@ -30,6 +31,10 @@ export default class HomeScreen extends React.Component {
         this.setState({results: searchResults})
       }
 
+      onPressSelectMovie = (value) => {
+          alert(`you pressed the ${value.Title}`)
+      }
+
       //REMOVE
       handleTesting = () => {
           console.log("BEGIN STATE.RESULTS\n\n")
@@ -49,7 +54,11 @@ export default class HomeScreen extends React.Component {
             <ScrollView>
             {this.state.results[0] != undefined && (
                 this.state.results.map((value, index) => {
-                    return <Text key={index}>{value.Title}</Text>
+                    return (
+                        <TouchableOpacity style={styles.item} key={index} onPress={this.onPressSelectMovie.bind(this,value)}>
+                            <Text key={index}>{value.Title}, {value.Year}</Text>
+                        </TouchableOpacity>
+                        )  
                 })
               )}
             </ScrollView>
@@ -83,7 +92,7 @@ export default class HomeScreen extends React.Component {
         borderRadius: 3,
       },
       item: {
-        backgroundColor: '#f9c2ff',
+        backgroundColor: '#b3ffb3',
         padding: 20,
         marginVertical: 8,
         marginHorizontal: 16,
