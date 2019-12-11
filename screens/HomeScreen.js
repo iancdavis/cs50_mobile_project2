@@ -35,6 +35,13 @@ export default class HomeScreen extends React.Component {
           alert(`you pressed the ${value.Title}`)
       }
 
+      checkShowResults = () => {
+          if(this.state.results === undefined){
+              return false
+          } else { return true }
+
+      }
+
       //REMOVE
       handleTesting = () => {
           console.log("BEGIN STATE.RESULTS\n\n")
@@ -52,7 +59,7 @@ export default class HomeScreen extends React.Component {
             <Button title="Submit" onPress={this.handleSubmit}/>
             <Button title="Testing" onPress={this.handleTesting}/>
             <ScrollView>
-            {this.state.results[0] != undefined && (
+            {this.checkShowResults() && (//this.state.results[0] != undefined
                 this.state.results.map((value, index) => {
                     return (
                         <TouchableOpacity style={styles.item} key={index} onPress={this.onPressSelectMovie.bind(this,value)}>
