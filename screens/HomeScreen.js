@@ -2,18 +2,11 @@ import React from 'react'
 import { StyleSheet, Text, View, TextInput, Button, ScrollView, FlatList, TouchableOpacity } from 'react-native'
 import Constants from 'expo-constants'
 
-import { fetchMovies } from '../api'
-import ScrollViewSearchResults from '../ScrollViewSearchResults';
-import { Row } from '../Row'
-//import { FlatList } from 'react-native-gesture-handler';
+import { fetchMovies, fetchMovieDetails } from '../api'
 
 export default class HomeScreen extends React.Component {
     static navigationOptions = {
         title: 'Home',
-        // moved header style options to appAppnavigator
-        /* headerStyle: {
-          backgroundColor: '#119'
-        }, */
       };
     
       state = {
@@ -21,9 +14,10 @@ export default class HomeScreen extends React.Component {
         results: [],
       }
     
-      handleNameChange = name => {
+      handleNameChange = async (name) => {
         this.setState({name})
-        //this.setState({results: fetchMovies(name)})
+        const searchResults = await fetchMovies(this.state.name)
+        this.setState({results: searchResults})
       }
     
       handleSubmit = async () => {
@@ -31,8 +25,9 @@ export default class HomeScreen extends React.Component {
         this.setState({results: searchResults})
       }
 
-      onPressSelectMovie = (value) => {
-          alert(`you pressed the ${value.Title}`)
+      onPressSelectMovie = async (value) => {
+          const detailedSearchResults = await fetchMovieDetails(value.Title)
+          this.props.navigation.navigate('Details', {data: detailedSearchResults})
       }
 
       checkShowResults = () => {
@@ -42,11 +37,6 @@ export default class HomeScreen extends React.Component {
 
       }
 
-      //REMOVE
-      handleTesting = () => {
-          console.log("BEGIN STATE.RESULTS\n\n")
-          console.log(this.state.results)
-      }
       render() {
         return (
           <View style={styles.container}>
@@ -54,29 +44,20 @@ export default class HomeScreen extends React.Component {
             style={styles.input}
             value={this.state.name}
             onChangeText={this.handleNameChange}
-            placeholder="Name"
+            placeholder="search movies"
+            autoFocus={true}
             />
-            <Button title="Submit" onPress={this.handleSubmit}/>
-            <Button title="Testing" onPress={this.handleTesting}/>
             <ScrollView>
-            {this.checkShowResults() && (//this.state.results[0] != undefined
+            {this.checkShowResults() && (
                 this.state.results.map((value, index) => {
                     return (
                         <TouchableOpacity style={styles.item} key={index} onPress={this.onPressSelectMovie.bind(this,value)}>
                             <Text key={index}>{value.Title}, {value.Year}</Text>
                         </TouchableOpacity>
-                        )  
+                    )  
                 })
               )}
             </ScrollView>
-            
-            <Button
-              title="Go to Details Screen"
-              onPress={() => this.props.navigation.navigate('Details', {
-                itemId: 86,
-                otherParam: 'example prop string',
-              })}
-            />
           </View>
         );
       }
@@ -99,7 +80,7 @@ export default class HomeScreen extends React.Component {
         borderRadius: 3,
       },
       item: {
-        backgroundColor: '#b3ffb3',
+        backgroundColor: '#b3d1ff',
         padding: 20,
         marginVertical: 8,
         marginHorizontal: 16,
