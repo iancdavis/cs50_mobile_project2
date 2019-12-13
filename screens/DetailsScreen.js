@@ -43,8 +43,6 @@ export default class DetailsScreen extends React.Component {
               return (<Text style={{textAlign: 'center'}} key={index}>{value.Source}:  {value.Value}</Text>)
             })}
           </View>
-          
-          
           <Button
             title="Go back"
             onPress={() => this.props.navigation.goBack()}
